@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: budgethobby_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: budgethobby
+      POSTGRES_PASSWORD: budgethobby_secret
+      POSTGRES_DB: budgethobby
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U budgethobby']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: budgethobby_server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://budgethobby:budgethobby_secret@db:5432/budgethobby
+      JWT_SECRET: supersecretjwtsecret_change_in_production
+      PORT: 3001
+      NODE_ENV: development
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: budgethobby_client
+    restart: unless-stopped
+    depends_on:
+      - server
+    environment:
+      VITE_API_URL: http://localhost:3001
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
