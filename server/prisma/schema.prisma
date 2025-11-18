@@ -59,3 +59,4 @@ model Preferences {
 
   @@map("preferences")
 }
+
