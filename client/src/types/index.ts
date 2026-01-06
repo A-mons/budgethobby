@@ -53,3 +53,4 @@ export const CATEGORIES: Category[] = [
   'Social',
   'Learning',
 ];
+
