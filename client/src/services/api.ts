@@ -57,4 +57,3 @@ export const userApi = {
   updatePreferences: (budget: number, categories: string[]) =>
     api.post('/user/preferences', { budget, categories }),
 };
-

@@ -150,4 +150,3 @@ Update user preferences.
   "categories": ["Sport", "Creative", "Nature"]
 }
 ```
-

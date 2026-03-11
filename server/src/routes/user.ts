@@ -92,4 +92,3 @@ router.get('/me', async (req: AuthRequest, res: Response): Promise<void> => {
 });
 
 export default router;
-

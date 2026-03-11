@@ -182,7 +182,3 @@ model Preferences {
 ## 📄 License
 
 MIT © [A-mons](https://github.com/A-mons)
-
-
-
-
